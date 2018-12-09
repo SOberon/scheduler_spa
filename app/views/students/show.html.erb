@@ -1,0 +1,16 @@
+<p>
+  <strong>Name:</strong>
+  <%= @student.name %>
+</p>
+
+<p>
+  <strong>Sections enrolled:</strong>
+  <ul>
+    <% @student.section.each do |section| %>
+      <li><%= [section.course.name, section.number].join(", section ") %></li>
+    <% end %>
+  </ul>
+</p>
+
+<%= link_to 'Edit', edit_student_path(@student) %> |
+<%= link_to 'Back', students_path %>
