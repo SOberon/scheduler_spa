@@ -1,0 +1,45 @@
+<html>
+<head>
+    <title>Scheduler</title>
+</head>
+<body>
+
+<button onclick="fetch('courses', ['name', 'department', 'number', 'credit_hours'])">Courses</button>
+<button onclick="fetch('sections', ['semester', 'number', 'course', 'room_number'])">Sections</button>
+<button onclick="fetch('students', ['name'])">Students</button>
+
+<div id="list">
+</div>
+
+<script>
+    var l = document.getElementById("list");
+    var clear = function() {
+        while (l.firstChild) {
+            l.removeChild(l.firstChild);
+        }
+    };
+    var http_request = new XMLHttpRequest();
+    var fetch = function(which, fields) {
+        http_request.open("GET", "http://localhost:3000/" + which + ".json", true);
+        http_request.onreadystatechange = function () {
+            let done = 4, ok = 200;
+            if (http_request.readyState === done && http_request.status === ok) {
+                clear();
+                let ul = document.createElement('ul');
+                l.appendChild(ul);
+                let jo = JSON.parse(http_request.responseText);
+                for (i in jo) {
+                    let li = document.createElement('li');
+                    for (f in fields) {
+                        li.textContent += jo[i][fields[f]] + ' ';
+                    }
+                    ul.appendChild(li);
+                }
+            }
+        }
+        http_request.send (null);
+    };
+</script>
+
+</body>
+</html>
